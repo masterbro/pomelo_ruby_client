@@ -6,9 +6,7 @@ require 'json'
 require "#{File.dirname(__FILE__)}/protocol"
 
 module PomeloClient
-
   class Client
-
     include Protocol
 
     URLHEADER = 'http://'
@@ -25,12 +23,17 @@ module PomeloClient
     def init_socket(url, port)
       url = "#{URLHEADER}#{url}" unless url =~ /http/
       url = "#{url}:#{port}"
+
       @socket = SocketIO.connect(url, sync: true) do
+        puts "before_start outside...."
+
         before_start do
-          on_connect do 
-            p "pomeloclient is connected." 
+          puts "before_start inside..."
+
+          on_connect do
+            p "pomeloclient is connected."
           end
-          
+
           on_error do
             p "connection is error."
             emit("disconnect", nil)
@@ -47,14 +50,14 @@ module PomeloClient
           end
 
           # on_message do |message|
-          #   p "pomelo send message of string : #{message}" 
-          #   process_message(message)            
+          #   p "pomelo send message of string : #{message}"
+          #   process_message(message)
           # end
         end
       end
 
-      @socket.on_message do |message| 
-        p "pomelo send message of string : #{message}" 
+      @socket.on_message do |message|
+        p "pomelo send message of string : #{message}"
         process_message(message)
       end
     end
@@ -63,7 +66,7 @@ module PomeloClient
       @req_id += 1
       @cbs[@req_id] = block
       message = message.to_json if message.class == Hash
-      send_message(@req_id, route, message) 
+      send_message(@req_id, route, message)
     end
 
     def send_message(req_id, route, message)
