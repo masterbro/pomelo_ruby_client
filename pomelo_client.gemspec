@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["sforce1000@gmail.com"]
   spec.summary       = %q{pomelo client for ruby}
   spec.description   = %q{pomelo client for ruby.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/sforce100/pomelo_ruby_client"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
