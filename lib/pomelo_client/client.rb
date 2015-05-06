@@ -25,28 +25,24 @@ module PomeloClient
       url = "#{url}:#{port}"
 
       @socket = SocketIO.connect(url, sync: true) do
-        puts "before_start outside...."
-
         before_start do
-          puts "before_start inside..."
-
           on_connect do
-            p "pomeloclient is connected."
+            #p "pomeloclient is connected."
           end
 
           on_error do
-            p "connection is error."
+            #p "connection is error."
             emit("disconnect", nil)
             @socket = nil
           end
 
           on_disconnect do
-            p 'connection is terminated.'
+            #p 'connection is terminated.'
             @socket = nil
           end
 
           on_heartbeat do
-            p 'on_heartbeat...'
+            #p 'on_heartbeat...'
           end
 
           # on_message do |message|
@@ -57,7 +53,7 @@ module PomeloClient
       end
 
       @socket.on_message do |message|
-        p "pomelo send message of string : #{message}"
+        #p "pomelo send message of string : #{message}"
         process_message(message)
       end
     end
@@ -84,12 +80,16 @@ module PomeloClient
     def process_message(data)
       hash_data = JSON.parse(data)
       id = hash_data['id']
-      p "process_message id:#{id}"
+
+      #p "process_message id:#{id}"
+
       if id != nil
         # request message
         id = id.to_i
         cb = @cbs[id]
-        p "process_message cb:#{cb}"
+
+        #p "process_message cb:#{cb}"
+
         cb.call(hash_data['body'])
         @cbs.delete(id)
       else
